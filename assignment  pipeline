@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git 'https://github.com/KavithaDonda/java-helloworld.git'
+            }
+        }
+        stage('mvn Build') {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+        stage('docker deploy') {
+            steps {
+                sh 'docker cp target/*.war e051af1a3608:/usr/local/tomcat/webapps'
+            }
+        }
+    }
+}
